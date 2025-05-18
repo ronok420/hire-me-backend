@@ -68,7 +68,22 @@ hireme-backend/
   ```bash
   npm start
   ```
-## Deployed base  url = https://hire-me-backend-b54b.onrender.com
+## Deployed Base URL
+
+**🌐 https://hire-me-backend-b54b.onrender.com**
+
+---
+
+## 👤 Default Admin Credentials
+
+A default admin user is automatically created when the database is initialized. Use this account to access all admin-level routes  adn  only  admin  can crate  users
+
+```json
+{
+  "email": "admin@hireme.com",
+  "password": "admin123"
+}
+
 
 ## 🔐 API Endpoints
 
