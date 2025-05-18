@@ -83,7 +83,7 @@ A default admin user is automatically created when the database is initialized. 
   "email": "admin@hireme.com",
   "password": "admin123"
 }
-
+```
 
 ## 🔐 API Endpoints
 
