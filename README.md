@@ -2,6 +2,16 @@
 
 A robust backend API for a job application platform that connects job seekers with employers, featuring role-based authentication, payment processing, and file upload capabilities.
 
+## 📫 API Documentation
+
+▶️ [View Full Postman API Docs](https://documenter.getpostman.com/view/40583921/2sB2qXjNes)
+
+This public Postman documentation includes:
+- Auth, Admin, Employee, and Job Seeker endpoints
+- Role-based access details
+- Payload formats and response examples
+- Authorization headers setup
+
 ## 🚀 Technologies Used
 
 - **Node.js** – Runtime environment  
@@ -76,7 +86,7 @@ hireme-backend/
 
 ## 👤 Default Admin Credentials
 
-A default admin user is automatically created when the database is initialized. Use this account to access all admin-level routes  and  only  admin  can create  users
+A default admin user is automatically created when the database is initialized. Use this account to access all admin-level routes  adn  only  admin  can crate  users
 
 ```json
 {
