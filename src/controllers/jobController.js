@@ -1,6 +1,6 @@
 import { supabase } from '../config/database.js';
 
-// Create a new job (Employee only)
+// Create a new job (Employee or Admin)
 export const createJob = async (req, res) => {
   try {
     const { job_title, job_description, company_name } = req.body;
@@ -73,22 +73,28 @@ export const getJobById = async (req, res) => {
   }
 };
 
-// Update job (Employee only)
+// Update job (Employee or Admin)
 export const updateJob = async (req, res) => {
   try {
     const { id } = req.params;
     const { job_title, job_description, company_name, job_status } = req.body;
+    const user_id = req.user.user_id;
+    const user_role = req.user.role;
 
-    // Check if job exists and belongs to the employee
+    // Check if job exists
     const { data: existingJob } = await supabase
       .from('jobs')
       .select('*')
       .eq('job_id', id)
-      .eq('posted_by_user_id', req.user.user_id)
       .single();
 
     if (!existingJob) {
-      return res.status(404).json({ error: 'Job not found or unauthorized' });
+      return res.status(404).json({ error: 'Job not found' });
+    }
+
+    // Check authorization
+    if (user_role !== 'admin' && existingJob.posted_by_user_id !== user_id) {
+      return res.status(403).json({ error: 'Unauthorized to update this job' });
     }
 
     const { data: job, error } = await supabase
@@ -111,21 +117,27 @@ export const updateJob = async (req, res) => {
   }
 };
 
-// Delete job (Employee only)
+// Delete job (Employee or Admin)
 export const deleteJob = async (req, res) => {
   try {
     const { id } = req.params;
+    const user_id = req.user.user_id;
+    const user_role = req.user.role;
 
-    // Check if job exists and belongs to the employee
+    // Check if job exists
     const { data: existingJob } = await supabase
       .from('jobs')
       .select('*')
       .eq('job_id', id)
-      .eq('posted_by_user_id', req.user.user_id)
       .single();
 
     if (!existingJob) {
-      return res.status(404).json({ error: 'Job not found or unauthorized' });
+      return res.status(404).json({ error: 'Job not found' });
+    }
+
+    // Check authorization
+    if (user_role !== 'admin' && existingJob.posted_by_user_id !== user_id) {
+      return res.status(403).json({ error: 'Unauthorized to delete this job' });
     }
 
     const { error } = await supabase
@@ -141,14 +153,23 @@ export const deleteJob = async (req, res) => {
   }
 };
 
-// Get jobs posted by employee
+// Get jobs posted by employee or admin
 export const getEmployeeJobs = async (req, res) => {
   try {
-    const { data: jobs, error } = await supabase
+    const user_id = req.user.user_id;
+    const user_role = req.user.role;
+
+    let query = supabase
       .from('jobs')
       .select('*')
-      .eq('posted_by_user_id', req.user.user_id)
       .order('created_at', { ascending: false });
+
+    // If admin, get all jobs. If employee, get only their jobs
+    if (user_role !== 'admin') {
+      query = query.eq('posted_by_user_id', user_id);
+    }
+
+    const { data: jobs, error } = await query;
 
     if (error) throw error;
 

@@ -20,22 +20,32 @@ const router = express.Router();
 router.get('/', getAllJobs);
 router.get('/:id', getJobById);
 
-// Protected routes
+// Protected routes (Employee and Admin)
 router.post('/', 
   authenticateToken, 
-  authorizeRole(['employee']), 
+  authorizeRole(['employee', 'admin']), 
   validate(createJobSchema), 
   createJob
 );
 
 router.put('/:id', 
   authenticateToken, 
-  authorizeRole(['employee']), 
+  authorizeRole(['employee', 'admin']), 
   validate(updateJobSchema), 
   updateJob
 );
 
-router.delete('/:id', authenticateToken, authorizeRole(['employee']), deleteJob);
-router.get('/employee/jobs', authenticateToken, authorizeRole(['employee']), getEmployeeJobs);
+router.delete('/:id', 
+  authenticateToken, 
+  authorizeRole(['employee', 'admin']), 
+  deleteJob
+);
+
+// Get jobs posted by employee or admin
+router.get('/employee/jobs', 
+  authenticateToken, 
+  authorizeRole(['employee', 'admin']), 
+  getEmployeeJobs
+);
 
 export default router; 
