@@ -67,6 +67,8 @@ hireme-backend/
   ```bash
   npm start
   ```
+## Deployed base  url = https://hire-me-backend-b54b.onrender.com
+
 ## 🔐 API Endpoints
 
 ### Authentication
