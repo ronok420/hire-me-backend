@@ -26,13 +26,14 @@ hireme-backend/
 │   ├── routes/
 │   ├── schemas/
 │   ├── services/
-│   └── app.js
+│   └── index.js
+|   |__validaitons
 ├── uploads/
-│   └── resumes/
+│   
 ├── .env
 ├── .gitignore
 ├── package.json
-└── server.js
+
 
 ```
 
@@ -73,7 +74,7 @@ hireme-backend/
 
 ### Authentication
 ```http
-# Register new user [Public]
+# Register new user (only job_seekers) [Public]
 POST http://localhost:5000/api/users/register
 Content-Type: application/json
 
@@ -81,7 +82,7 @@ Content-Type: application/json
     "full_name": "John Doe",
     "email": "john@example.com",
     "password": "password123",
-    "role": "job_seeker"  // Can be: "job_seeker", "employee", or "admin"
+    "role": "job_seeker"  // Can be: "job_seeker"  only
 }
 
 # Login [Public]
@@ -102,7 +103,7 @@ GET http://localhost:5000/api/jobs
 # Get specific job details [Public]
 GET http://localhost:5000/api/jobs/:id
 
-# Apply for a job (Step 1: Upload Resume) [Job Seeker]
+# Apply for a job (Step 1: Upload Resume) [Job Seeker]  but  need  to payment first 
 POST http://localhost:5000/api/applications/:job_id/:user_id/initiate
 Authorization: Bearer job_seeker_token
 Content-Type: multipart/form-data
@@ -111,16 +112,13 @@ Content-Type: multipart/form-data
     "resume": [file]
 }
 
-# Process payment (Step 2) [Job Seeker]
+# Process payment (Step 2) [Job Seeker]  processing the payment 
 POST http://localhost:5000/api/applications/:job_id/:user_id/payment
 Authorization: Bearer job_seeker_token
 Content-Type: application/json
 
-{
-    "payment_method": "card"
-}
 
-# Confirm payment (Step 3) [Job Seeker]
+# Confirm payment (Step 3) [Job Seeker]   confirm payment with ( payment intent id), the  status  will be  pending  employee  will update the status 
 POST http://localhost:5000/api/applications/:job_id/:user_id/confirm-payment
 Authorization: Bearer job_seeker_token
 Content-Type: application/json
@@ -129,7 +127,7 @@ Content-Type: application/json
     "payment_intent_id": "pi_123456789"
 }
 
-# View application details [Job Seeker]
+# View individual application details [Job Seeker]   
 GET http://localhost:5000/api/applications/:application_id
 Authorization: Bearer job_seeker_token
 ```
@@ -149,7 +147,7 @@ Content-Type: application/json
 
 # Update job [Employee, Admin]
 PUT http://localhost:5000/api/jobs/:id
-Authorization: Bearer employee_token
+Authorization: Bearer employee_token or admin token
 Content-Type: application/json
 
 {
@@ -161,7 +159,7 @@ Content-Type: application/json
 
 # Delete job [Employee, Admin]
 DELETE http://localhost:5000/api/jobs/:id
-Authorization: Bearer employee_token
+Authorization: Bearer employee_token or admin_token
 
 # Get jobs posted by employee [Employee, Admin]
 GET http://localhost:5000/api/jobs/employee/jobs
@@ -177,7 +175,7 @@ Authorization: Bearer employee_token
 Content-Type: application/json
 
 {
-    "status": "approved"  // Can be: "pending", "accepted", "rejected"
+    "status": "accepted"  // Can be: "pending", "accepted", "rejected" only
 }
 
 # Get all applications for posted jobs [Employee]
