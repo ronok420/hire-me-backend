@@ -76,7 +76,7 @@ hireme-backend/
 
 ## 👤 Default Admin Credentials
 
-A default admin user is automatically created when the database is initialized. Use this account to access all admin-level routes  adn  only  admin  can crate  users
+A default admin user is automatically created when the database is initialized. Use this account to access all admin-level routes  and  only  admin  can create  users
 
 ```json
 {
