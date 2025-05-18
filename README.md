@@ -47,13 +47,13 @@ hireme-backend/
    ```bash
    npm install
    ```
-3. **Configure** environment variables by creating a `.env` file in the project root:
+3. **Configure** environment variables by creating a `.env` file in the project root: for testing purpose  kept the  .env file 
    ```env
-   DATABASE_URL=postgresql://<user>:<pass>@<host>:5432/<db_name>
-   SUPABASE_URL=https://<project-ref>.supabase.co
-   SUPABASE_SERVICE_ROLE_KEY=<service-role-key>
+ 
+   SUPABASE_URL= supabase project url
+   SUPABASE_SERVICE_ROLE_KEY= supabase service rol key
    JWT_SECRET=<your_jwt_secret>
-   STRIPE_SECRET_KEY=<your_stripe_secret_key>
+   STRIPE_SECRET_KEY=<your_stripe_secret_key> 
    PORT=4000
    ```
 
